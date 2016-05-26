@@ -30,7 +30,7 @@
 -include_lib("eunit/include/eunit.hrl").
 -endif.
 
--include_lib("riak_pb/include/riak.hrl").
+-include_lib("riak_pb/include/riak_pb.hrl").
 -include_lib("public_key/include/public_key.hrl").
 
 -behaviour(gen_fsm).

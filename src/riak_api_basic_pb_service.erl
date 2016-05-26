@@ -40,7 +40,7 @@
 %% @end
 -module(riak_api_basic_pb_service).
 
--include_lib("riak_pb/include/riak.hrl").
+-include_lib("riak_pb/include/riak_pb.hrl").
 
 -behaviour(riak_api_pb_service).
 
