@@ -40,7 +40,7 @@
          process/2,
          process_stream/3]).
 
--include_lib("riak_pb/include/riak_pb.hrl").
+-include_lib("riak_pb/include/riak.hrl").
 
 init() ->
     undefined.
