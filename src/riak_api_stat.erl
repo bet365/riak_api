@@ -26,6 +26,7 @@
 -export([start_link /0, register_stats/0,
          get_stats/0,
          produce_stats/0,
+         get_values/1,
          update/1,
          stats/0,
          active_pb_connects/1]).
@@ -45,7 +46,7 @@ start_link() ->
     gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
 register_stats() ->
-    riak_core_stat:register_stats(?APP, stats()).
+    riak_stat_mngr:register_stats(?APP, stats()).
 
 %% @doc Return current aggregation of all stats.
 -spec get_stats() -> proplists:proplist().
@@ -54,15 +55,13 @@ get_stats() ->
     Stats.
 
 produce_stats() ->
-    {?APP, riak_core_stat_q:get_stats([riak_api])}.
+    {?APP, get_values([riak_api])}.
+
+get_values(Path) ->
+  riak_stat_mngr:get_values(Path).
 
 update(Arg) ->
-  case app_helper:get_env(riak_stats, ?MODULE, true) of
-    false ->
-      ok;
-    true ->
-      gen_server:cast(?SERVER, {update, Arg})
-  end.
+       gen_server:cast(?SERVER, {update, Arg}).
 
 %% gen_server
 
@@ -91,7 +90,7 @@ code_change(_OldVsn, State, _Extra) ->
 %% @doc Update the given `Stat'.
 -spec update1(term()) -> ok.
 update1(pbc_connect) ->
-    exometer:update([riak_core_stat:prefix(), ?APP, pbc_connects], 1).
+  riak_stat_mngr:update_stats(?APP, pbc_connects, 1, pbc_connects).
 
 %% -------------------------------------------------------------------
 %% Private
