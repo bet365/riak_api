@@ -90,7 +90,7 @@ code_change(_OldVsn, State, _Extra) ->
 %% @doc Update the given `Stat'.
 -spec update1(term()) -> ok.
 update1(pbc_connect) ->
-  riak_stat_mngr:update_stats(?APP, pbc_connects, 1).
+  riak_stat_mngr:update_or_create(?APP, pbc_connects, 1, spiral).
 
 %% -------------------------------------------------------------------
 %% Private
