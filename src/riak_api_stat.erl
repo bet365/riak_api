@@ -37,6 +37,7 @@
 
 -define(SERVER, ?MODULE).
 -define(APP, riak_api).
+-define(PFX, riak_stat_admin:prefix()).
 
 %% -------------------------------------------------------------------
 %% API
@@ -46,7 +47,7 @@ start_link() ->
   gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
 register_stats() ->
-  riak_stat_mngr:register_stats(?APP, stats()).
+  riak_stat_coordinator:coordinate(admin, {register, {?APP, stats()}}).
 
 %% @doc Return current aggregation of all stats.
 -spec get_stats() -> proplists:proplist().
@@ -90,7 +91,8 @@ code_change(_OldVsn, State, _Extra) ->
 %% @doc Update the given `Stat'.
 -spec update1(term()) -> ok.
 update1(pbc_connect) ->
-  riak_stat_mngr:update_or_create(?APP, pbc_connects, 1, spiral).
+  riak_stat_coordinator:coordinate(exometer,
+    {update, {[?PFX, ?APP, pbc_connects], 1, spiral}}).
 
 %% -------------------------------------------------------------------
 %% Private
