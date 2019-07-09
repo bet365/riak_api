@@ -26,7 +26,7 @@
 -export([start_link/0, register_stats/0,
   get_stats/0,
   produce_stats/0,
-  get_values/1,
+  get_app_stats/0, get_stats_info/0, get_stats_status/0,
   update/1,
   stats/0,
   active_pb_connects/1]).
@@ -56,10 +56,19 @@ get_stats() ->
   Stats.
 
 produce_stats() ->
-  {?APP, get_values([?APP])}.
+  {?APP, get_values()}.
 
-get_values(Path) ->
-  riak_stat:get_app_stats(Path).
+get_values() ->
+  riak_stat:get_app_stats(?APP).
+
+get_app_stats() ->
+  riak_stat:get_app_stats(?APP).
+
+get_stats_status() ->
+  riak_stat:get_stats_status(?APP).
+
+get_stats_info() ->
+  riak_stat:get_stats_info(?APP).
 
 update(Arg) ->
   gen_server:cast(?SERVER, {update, Arg}).
