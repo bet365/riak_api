@@ -5,4 +5,6 @@ priv/*
 *.beam
 doc
 ebin
+.idea/*
+riak_api.iml
 .local_dialyzer_plt
